@@ -11,18 +11,25 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+// middleware
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 
+// test route (IMPORTANT)
 app.get("/", (req, res) => {
-  res.send("Laya backend is running");
+  res.send("Laya backend is running 🚀");
 });
 
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
+// port
 const PORT = process.env.PORT || 5000;
 
+// start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
