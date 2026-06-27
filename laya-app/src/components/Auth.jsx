@@ -3,12 +3,16 @@ import { Mail, Lock, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../firebase";
+
 const Auth = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Email login
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -24,6 +28,19 @@ const Auth = () => {
     } catch (error) {
       console.error(error.response?.data || error.message);
       alert("Login failed");
+    }
+  };
+
+  // Google login
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      console.log(result.user);
+      navigate("/home");
+    } catch (error) {
+      console.error(error.message);
+      alert("Google Sign-In failed");
     }
   };
 
@@ -85,7 +102,10 @@ const Auth = () => {
         </div>
 
         {/* Google Sign In */}
-        <button className="w-full border border-[#89D7B7] py-3 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-[#FFF4E1] transition">
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full border border-[#89D7B7] py-3 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-[#FFF4E1] transition"
+        >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
             alt="Google"
