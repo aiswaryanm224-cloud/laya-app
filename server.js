@@ -12,12 +12,16 @@ connectDB();
 const app = express();
 
 // middleware
-app.use(cors({
-  origin: "*"
-}));
+app.use(
+  cors({
+    origin: "https://laya-ksxri9pr2-aiswaryanm224-clouds-projects.vercel.app",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-// test route (IMPORTANT)
+// test route
 app.get("/", (req, res) => {
   res.send("Laya backend is running 🚀");
 });
