@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mail, Lock, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Auth = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(
+        "https://laya-app.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      console.log(res.data);
+      navigate("/home");
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+      alert("Login failed");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FFF4E1] px-4">
@@ -25,6 +47,8 @@ const Auth = () => {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-transparent outline-none w-full"
             />
           </div>
@@ -38,6 +62,8 @@ const Auth = () => {
             <input
               type="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="bg-transparent outline-none w-full"
             />
           </div>
@@ -45,7 +71,7 @@ const Auth = () => {
 
         {/* Sign In Button */}
         <button
-          onClick={() => navigate("/home")}
+          onClick={handleLogin}
           className="w-full bg-[#428475] text-white py-3 rounded-xl font-semibold hover:bg-[#1A312C] transition mb-4"
         >
           Sign In
